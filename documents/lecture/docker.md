@@ -294,26 +294,25 @@ docker compose logs -f
 
 ## 実践: MySQL を Docker で動かす
 
-### Step 1: docker-compose.yml を確認
+### Step 1: docker-compose.yml の例
 
-このプロジェクトの `docker-compose.yml` を見てみましょう。
+MySQL を起動するための `docker-compose.yml` の例です。
 
 ```yaml
 version: "3.8"
 services:
   mysql:
     image: mysql:8.0 # MySQL 8.0 のイメージを使用
-    container_name: mysql-web-sample # コンテナ名
+    container_name: my-mysql # コンテナ名
     ports:
-      - "3326:3306" # ホスト:コンテナ のポートマッピング
+      - "3306:3306" # ホスト:コンテナ のポートマッピング
     environment: # 環境変数
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: web_sample_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
     volumes:
       - mysql_data:/var/lib/mysql # データを永続化
-      - ./mysql/init:/docker-entrypoint-initdb.d # 初期化スクリプト
 
 volumes:
   mysql_data: # 名前付きボリューム
@@ -359,10 +358,10 @@ abc123def456   mysql:8.0   0.0.0.0:3326->3306/tcp   Up 10 seconds
 
 ```bash
 # コンテナの中に入る
-docker exec -it mysql-web-sample mysql -uuser -ppassword web_sample_db
+docker exec -it my-mysql mysql -umyuser -pmypassword my_database
 
 # または、ホストから接続
-mysql -h 127.0.0.1 -P 3326 -u user -ppassword web_sample_db
+mysql -h 127.0.0.1 -P 3306 -u myuser -pmypassword my_database
 ```
 
 ### Step 5: データの確認
@@ -449,11 +448,15 @@ docker system prune -a
 ### ポートが既に使用されている
 
 ```bash
-# ポート使用状況を確認
-lsof -i :3326
+# ポート使用状況を確認（Linux/Mac）
+lsof -i :3306
+
+# Windows の場合
+netstat -ano | findstr :3306
 
 # 必要に応じてプロセスを終了
-kill -9 <PID>
+kill -9 <PID>  # Linux/Mac
+taskkill /PID <PID> /F  # Windows
 ```
 
 ### コンテナが起動しない
@@ -463,7 +466,7 @@ kill -9 <PID>
 docker compose logs mysql
 
 # コンテナの状態を詳細表示
-docker inspect mysql-web-sample
+docker inspect my-mysql
 ```
 
 ### データベースに接続できない

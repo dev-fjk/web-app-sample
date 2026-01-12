@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3326/web_sample_db?useSSL=false&allowPublicKeyRetrieval=true
+    username: user
+    password: password
+  devtools:
+    restart:
+      enabled: true
