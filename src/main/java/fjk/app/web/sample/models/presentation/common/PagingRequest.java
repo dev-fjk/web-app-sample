@@ -21,22 +21,4 @@ public abstract class PagingRequest {
   @Min(value = 1, message = "ページサイズは1以上である必要があります")
   @Max(value = 100, message = "ページサイズは100以下である必要があります")
   private Integer pageSize = 10;
-
-  /**
-   * データベース検索用のオフセット値を計算
-   *
-   * @return オフセット値
-   */
-  public Integer getOffset() {
-    return (page - 1) * pageSize;
-  }
-
-  /**
-   * データベース検索用のリミット値を取得
-   *
-   * @return リミット値
-   */
-  public Integer getLimit() {
-    return pageSize;
-  }
 }

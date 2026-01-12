@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import fjk.app.web.sample.models.constants.DateTimeFormat;
-import fjk.app.web.sample.models.presentation.response.common.PaginationView;
+import fjk.app.web.sample.models.infra.entity.User;
+import fjk.app.web.sample.models.presentation.response.common.Pagination;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,7 @@ import lombok.Data;
 public class UserListResponse {
 
   @Schema(description = "ページング情報")
-  private PaginationView pagination;
+  private Pagination pagination;
 
   @Schema(description = "ユーザーリスト")
   private List<UserView> data;
@@ -54,5 +55,22 @@ public class UserListResponse {
     @Schema(description = "更新日時", example = "2024-01-01T12:00:00")
     @JsonFormat(pattern = DateTimeFormat.ISO_DATETIME)
     private LocalDateTime updatedAt;
+
+    /**
+     * Entity to ResponseModel.
+     *
+     * @param user user
+     * @return {@link UserView}
+     */
+    public static UserView fromEntity(User user) {
+      return UserView.builder()
+          .id(user.getId())
+          .userName(user.getName())
+          .email(user.getEmail())
+          .phoneNumber(user.getPhoneNumber())
+          .createdAt(user.getCreatedAt())
+          .updatedAt(user.getUpdatedAt())
+          .build();
+    }
   }
 }

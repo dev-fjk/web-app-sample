@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 @Builder
 @Schema(description = "ページング情報")
-public class PaginationView {
+public class Pagination {
 
   @Schema(description = "現在のページ番号（1から開始）", example = "1")
   private Integer page;
@@ -20,11 +20,11 @@ public class PaginationView {
   @Schema(description = "1ページあたりの件数", example = "10")
   private Integer pageSize;
 
-  @Schema(description = "検索条件に一致する総件数", example = "100")
-  private Integer totalCount;
-
   @Schema(description = "総ページ数", example = "10")
   private Integer totalPage;
+
+  @Schema(description = "検索条件に一致する総件数", example = "100")
+  private Integer totalCount;
 
   @Schema(description = "今回取得したデータ件数", example = "10")
   private Integer fetchSize;
@@ -41,7 +41,7 @@ public class PaginationView {
    * @param fetchSize 取得件数
    * @return PaginationView
    */
-  public static PaginationView of(
+  public static Pagination of(
       final Integer page,
       final Integer pageSize,
       final Integer totalCount,
@@ -49,11 +49,11 @@ public class PaginationView {
     final int totalPage = (int) Math.ceil((double) totalCount / pageSize);
     final boolean hasNext = page < totalPage;
 
-    return PaginationView.builder()
+    return Pagination.builder()
         .page(page)
         .pageSize(pageSize)
-        .totalCount(totalCount)
         .totalPage(totalPage)
+        .totalCount(totalCount)
         .fetchSize(fetchSize)
         .hasNext(hasNext)
         .build();

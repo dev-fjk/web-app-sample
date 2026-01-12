@@ -17,15 +17,15 @@ import lombok.EqualsAndHashCode;
 @ParameterObject
 public class UserListQuery extends PagingRequest {
 
-  @Schema(description = "ユーザーID", example = "1")
+  @Schema(description = "ユーザーID")
   private Long id;
 
-  @Schema(description = "ユーザー名(部分一致)", example = "山田")
+  @Schema(description = "ユーザー名(部分一致)")
   private String userName;
 
-  @Schema(description = "メールアドレス(部分一致)", example = "yamada@example.com")
+  @Schema(description = "メールアドレス(部分一致)")
   private String email;
 
-  @Schema(description = "電話番号", example = "090")
+  @Schema(description = "電話番号")
   private String phoneNumber;
 }

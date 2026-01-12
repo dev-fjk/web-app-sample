@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import fjk.app.web.sample.models.domain.dto.PagingDto;
 import fjk.app.web.sample.models.infra.dto.UserDbSearchDto;
 import fjk.app.web.sample.models.infra.entity.User;
 
@@ -43,22 +44,16 @@ public interface UserMapper {
   @Select(
       """
       <script>
-        SELECT
-          id,
-          name,
-          email,
-          phone_number,
-          created_at,
-          updated_at
+        SELECT *
         FROM users
       """
           + WHERE_CONDITION
           + """
                  ORDER BY id DESC
-                 LIMIT #{dto.limit} OFFSET #{dto.offset}
+                 LIMIT #{pagingDto.offset}, #{pagingDto.limit}
                </script>
           """)
-  List<User> findAll(@Param("dto") UserDbSearchDto dto);
+  List<User> findAll(@Param("dto") UserDbSearchDto dto, @Param("pagingDto") PagingDto pagingDto);
 
   /**
    * 検索条件に一致するユーザーの総件数を取得
