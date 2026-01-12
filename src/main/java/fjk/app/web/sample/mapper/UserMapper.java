@@ -36,6 +36,15 @@ public interface UserMapper {
       """;
 
   /**
+   * find user by id
+   *
+   * @param id
+   * @return {@link User}
+   */
+  @Select("SELECT * FROM users WHERE id = #{id}")
+  User findById(Long id);
+
+  /**
    * ユーザー一覧を検索（ページング）
    *
    * @param dto 検索条件
