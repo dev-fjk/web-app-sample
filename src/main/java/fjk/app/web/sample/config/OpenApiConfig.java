@@ -30,6 +30,10 @@ public class OpenApiConfig {
       Components components = openApi.getComponents();
       var schemas = ModelConverters.getInstance().read(ApiErrorResponse.class);
       schemas.forEach(components::addSchemas);
+
+      // servers設定を追加（/apiプレフィックス付き）
+      openApi.addServersItem(
+          new io.swagger.v3.oas.models.servers.Server().url("/api").description("API Server"));
     };
   }
 

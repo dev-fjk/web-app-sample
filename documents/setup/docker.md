@@ -6,6 +6,7 @@
 
 本プロジェクトでは、Docker を使用してアプリケーションをコンテナ化して実行できます。
 Docker 環境では、MySQL サーバーを立てずに、H2 Database（メモリ内データベース）を使用します。
+また、nginx をリバースプロキシとして使用し、API エンドポイントを `/api/v1` で提供します。
 
 ## 前提条件
 
@@ -47,16 +48,23 @@ web-app-sample   latest   xxxxxx   1 minute ago   500MB
 
 ### コンテナの起動
 
+既存のコンテナがある場合は、先に削除してください：
+
+```bash
+docker stop web-app-sample 2>/dev/null || true
+docker rm web-app-sample 2>/dev/null || true
+```
+
 以下のコマンドでコンテナを起動します：
 
 ```bash
-docker run -d -p 8090:8090 --name web-app-sample web-app-sample
+docker run -d -p 80:80 --name web-app-sample web-app-sample
 ```
 
 オプションの説明：
 
 - `-d`: バックグラウンドで実行（デタッチモード）
-- `-p 8090:8090`: ホストの 8090 ポートをコンテナの 8090 ポートにマッピング
+- `-p 80:80`: ホストの 80 ポートをコンテナの 80 ポートにマッピング
 - `--name web-app-sample`: コンテナに名前を付ける
 
 ### 起動の確認
@@ -71,7 +79,7 @@ docker ps
 
 ```
 CONTAINER ID   IMAGE            COMMAND                  STATUS         PORTS                    NAMES
-xxxxxxxxxxxx   web-app-sample   "java -jar app.jar..."  Up 10 seconds  0.0.0.0:8090->8090/tcp  web-app-sample
+xxxxxxxxxxxx   web-app-sample   "sh -c java -jar..."    Up 10 seconds  0.0.0.0:80->80/tcp      web-app-sample
 ```
 
 ### ログの確認
@@ -99,7 +107,7 @@ Started WebApplication in X.XXX seconds
 アプリケーションが正常に起動しているか確認します：
 
 ```bash
-curl http://localhost:8090/actuator/health
+curl http://localhost/actuator/health
 ```
 
 正常な場合、以下のようなレスポンスが返ります：
@@ -108,11 +116,42 @@ curl http://localhost:8090/actuator/health
 { "status": "UP" }
 ```
 
-ブラウザで以下の URL にアクセスして Swagger UI を確認できます：
+ブラウザで以下の URL にアクセスできます：
+
+- **Frontend**: http://localhost
+- **Swagger UI**: http://localhost/swagger-ui.html
+
+API エンドポイントは `/api/v1` でアクセスできます：
+
+```bash
+curl http://localhost/api/v1/users
+```
+
+## アーキテクチャ
+
+Docker コンテナ内では以下の構成で動作します：
 
 ```
-http://localhost:8090/swagger-ui.html
+┌─────────────────────────────────┐
+│         nginx (Port 80)          │
+│  - 静的ファイル配信（React）     │
+│  - リバースプロキシ              │
+│  - セキュリティヘッダー付与      │
+└─────────────────────────────────┘
+              ↓
+┌─────────────────────────────────┐
+│   Spring Boot (Port 8090)        │
+│   - H2 Database                  │
+└─────────────────────────────────┘
 ```
+
+### nginx のプロキシ設定
+
+- `/` → フロントエンド（React）の静的ファイル
+- `/api/*` → Spring Boot (`localhost:8090`)
+- `/swagger-ui.html`, `/swagger-ui/*` → Spring Boot
+- `/v3/api-docs` → Spring Boot
+- `/actuator/*` → Spring Boot
 
 ## コンテナの管理
 
@@ -152,7 +191,7 @@ docker rmi web-app-sample
 エラーメッセージ：
 
 ```
-Error response from daemon: Ports are not available: exposing port TCP 0.0.0.0:8090->8090/tcp: bind: address already in use
+Error response from daemon: Ports are not available: exposing port TCP 0.0.0.0:80->80/tcp: bind: address already in use
 ```
 
 **解決方法**：
@@ -160,10 +199,10 @@ Error response from daemon: Ports are not available: exposing port TCP 0.0.0.0:8
 1. 別のポートを使用する：
 
    ```bash
-   docker run -d -p 8091:8090 --name web-app-sample web-app-sample
+   docker run -d -p 8080:80 --name web-app-sample web-app-sample
    ```
 
-   この場合、`http://localhost:8091`でアクセスします。
+   この場合、`http://localhost:8080`でアクセスします。
 
 2. 既存のコンテナを停止・削除する：
 
@@ -193,8 +232,19 @@ docker logs web-app-sample
 
 - Docker Desktop のメモリ設定を増やす（推奨: 4GB 以上）
 
+### nginx が起動しない場合
+
+nginx の設定を確認します：
+
+```bash
+docker exec web-app-sample nginx -t
+```
+
+設定ファイルの構文エラーがないか確認できます。
+
 ## 関連ドキュメント
 
 - [make コマンド一覧](./make.md)
 - [MySQL セットアップ](./mysql.md)
-- [アーキテクチャドキュメント](../architecture/springboot.md)
+- [Spring Boot アーキテクチャ](../architecture/springboot.md)
+- [React フロントエンドアーキテクチャ](../architecture/react.md)

@@ -4,6 +4,11 @@
 # Log file
 *.log
 
+# Frontend
+frontend/node_modules
+frontend/dist
+frontend/.vite
+
 # BlueJ files
 *.ctxt
 
