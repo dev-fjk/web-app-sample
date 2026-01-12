@@ -1,0 +1,18 @@
+{
+  "[java]": {
+    "editor.defaultFormatter": "josevseb.google-java-format-for-vs-code"
+  },
+  "java.import.gradle.enabled": true,
+  "java.import.maven.enabled": true,
+  "java.saveActions.organizeImports": true,
+  "java.format.settings.url": "${workspaceFolder}/config/eclipse-java-google-style.xml",
+  "java.format.settings.profile": "GoogleStyle",
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "files.encoding": "utf8",
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "terminal.integrated.scrollback": 10000,
+  "editor.formatOnSave": true,
+  "java.configuration.updateBuildConfiguration": "interactive"
+}
