@@ -49,9 +49,9 @@ public interface UserMapper {
       """
           + WHERE_CONDITION
           + """
-                 ORDER BY id DESC
-                 LIMIT #{pagingDto.offset}, #{pagingDto.limit}
-               </script>
+             ORDER BY id DESC
+             LIMIT #{pagingDto.offset}, #{pagingDto.limit}
+           </script>
           """)
   List<User> findAll(@Param("dto") UserDbSearchDto dto, @Param("pagingDto") PagingDto pagingDto);
 
