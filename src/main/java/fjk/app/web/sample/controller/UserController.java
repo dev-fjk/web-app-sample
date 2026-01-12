@@ -1,19 +1,20 @@
 package fjk.app.web.sample.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import fjk.app.web.sample.components.BeanValidationErrorThrower;
 import fjk.app.web.sample.models.presentation.query.UserListQuery;
 import fjk.app.web.sample.models.presentation.response.users.UserListResponse;
 import fjk.app.web.sample.models.presentation.response.users.UserResponse;
 import fjk.app.web.sample.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
   private final UserService userService;
+  private final BeanValidationErrorThrower beanValidationErrorThrower;
 
   /**
    * ユーザー取得
@@ -49,8 +51,11 @@ public class UserController {
    * @return ユーザーリスト
    */
   @GetMapping
-  @Operation(summary = "ユーザー一覧検索", description = "条件に一致するユーザーを検索します")
-  public ResponseEntity<UserListResponse> search(@Valid @ModelAttribute final UserListQuery query) {
+  @Operation(summary = "ユーザーリスト検索", description = "条件に一致するユーザーを検索します")
+  public ResponseEntity<UserListResponse> search(
+      @ModelAttribute @Validated final UserListQuery query, BindingResult bindingResult) {
+    beanValidationErrorThrower.throwIfHasErrors(bindingResult);
+
     final UserListResponse response = userService.searchUsers(query);
     return ResponseEntity.ok(response);
   }
