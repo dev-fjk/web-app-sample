@@ -8,6 +8,8 @@
 - 極力変数は変更不要で定義し、final を使用してください。
 - 過剰なログ出力は行いません。 正常系ログは AOP/Filter で基本的に行います。異常系のログは ExceptionHandler や catch 句内でのみ出力します。
 - Service にロジックを集約させずに、Domain Model や Factory/Converter のような専用責務を持つクラスに処理を分割し、メンテしやすくします。
+- Log 出力は `@Slf4j` の利用で統一します。
+- DI は `@RequiredArgsConstructor` を利用した コンストラクタインジェクションで統一します。
 
 ## (2) パッケージ構成
 

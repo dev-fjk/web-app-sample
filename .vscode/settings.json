@@ -14,5 +14,5 @@
   "files.trimFinalNewlines": true,
   "terminal.integrated.scrollback": 10000,
   "editor.formatOnSave": true,
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "automatic"
 }
