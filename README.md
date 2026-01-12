@@ -81,7 +81,9 @@ make run-fe
 アプリケーション起動後、以下の URL にアクセスしてください：
 
 - **Frontend**: http://localhost:3000
-- **Swagger UI**: http://localhost:3000/swagger-ui.html（開発環境）または http://localhost/swagger-ui.html（Docker環境）
+- **Swagger UI**
+  -  [FEも起動時](http:localhost:3000/swagger-ui.html)
+  -  [APIのみ](http://localhost:8080/swagger-ui.html)
 
 ## ドキュメント
 
