@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    container_name: web_sample_db
+    environment:
+      MYSQL_DATABASE: web_sample_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+      TZ: "Asia/Tokyo"
+      # 日本語の文字化け対策
+      MYSQL_CHARACTER_SET_SERVER: utf8mb4
+      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --skip-character-set-client-handshake
+    ports:
+      - "3326:3306"
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql-db:
+    driver: local
