@@ -40,3 +40,4 @@ springdoc:
     doc-expansion: list
     config-url: /v3/api-docs/swagger-config
     url: /v3/api-docs
+    server-url: http://localhost/api
