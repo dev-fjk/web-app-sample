@@ -37,3 +37,14 @@
 - 複雑な Model 変換については Conveter/Factory という補助クラスを Spring Bean として用意して作成し、そちらで変換するようにしてください。
   - Factory: Model の生成に特化したクラス Service -> Repository で必要な Model を生成する
   - Converter: Model 間の変換に特化したクラス 基本的には戻し(Repository -> Service/ Service -> Controller)の Model 変換で利用
+
+## Unit Test Rule
+
+- Junit を利用して Unit Test を記載します。
+- メソッド単位で InnerClass を作成し、テストを作成します。
+- C0/C1 網羅を行います。
+- Validation Test は Request Model に対して UT を利用し、Validator を使って簡易テストを行います。(Controller のテストを肥大化させない)
+- `@DisplayName`を利用し、テスト内容を分かりやすくします。(日本語で記載)
+- パラメータ化テストは積極的に利用し、パラメータ網羅・境界値試験を行います
+- 日時情報は `Clock` を利用して Mock 化します。 動的な現在日時はテストが安定しなくなるため使用を避けること。
+- テストメソッドはキャメルケースでシンプルな命名とします。(`@DisplayName`があるため)
