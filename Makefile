@@ -3,21 +3,22 @@
 # デフォルトターゲット
 help:
 	@echo "利用可能なコマンド:"
+	@echo "  make run-api    - Spring Bootアプリケーションを起動"
 	@echo "  make build      - アプリケーションをビルド"
-	@echo "  make run        - Spring Bootアプリケーションを起動"
 	@echo "  make clean      - ビルド成果物をクリーンアップ"
 	@echo "  make test       - テストを実行"
 	@echo "  make db-up      - データベースを起動"
 	@echo "  make db-down    - データベースを停止"
 	@echo "  make db-reset   - データベースをリセット"
 
+# Spring boot Comamands
+# Spring Bootアプリケーションの起動
+run-api:
+	./gradlew bootRun
+
 # アプリケーションのビルド
 build:
 	./gradlew build
-
-# Spring Bootアプリケーションの起動
-run:
-	./gradlew bootRun
 
 # ビルド成果物のクリーンアップ
 clean:
@@ -27,15 +28,16 @@ clean:
 test:
 	./gradlew test
 
-# データベースの起動
+# DB Commands
+## データベースの起動
 db-up:
 	docker-compose up -d
 
-# データベースの停止
+## データベースの停止
 db-down:
 	docker-compose down
 
-# データベースのリセット
+## データベースのリセット
 db-reset:
 	docker-compose down -v
 	docker-compose up -d

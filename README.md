@@ -2,111 +2,67 @@
 
 架空の BtoC グルメサイトのカスタマーサービス向けの社内アプリのサンプルアプリです。
 
-## 動作確認(Swagger)
-
-Swagger を用意しているため、アプリケーション実行後、以下の URL の Swagger から確認してください。
-
-http://localhost:8080/swagger-ui/index.html
-
-## 利用ツール
+## 利用技術
 
 - Java: 21
-- React
+- Spring Boot
 - MyBatis
 - Gradle
 - Docker Compose
-- Open API
+- OpenAPI / Swagger
 - Make
 
-## 必要な設定・環境
+## 環境構築
 
-- 端末
-  - WSL or Mac
-  - WSL を使って作成しています。
-- IDE
-  - Cursor or VSCode 推奨
-  - 開発は Cursor を利用して行っています。
-- 導入必要なツールなど
-  - JDK21
+### 必要な設定・環境
+
+- 端末: WSL or Mac
+- IDE: Cursor or VSCode 推奨
+- 必要なツール:
+  - JDK 21
   - Docker Compose
-    - MySQL 建てるだけなので、Docker 無しで MySQL を自前で用意しても OK です
-  - Make (WSL では通常インストール済み、Mac では `xcode-select --install` でインストール)
+  - Make
 
-## VSCode 拡張機能
+詳細なセットアップ手順は以下を参照してください：
+
+- [WSL のセットアップ](./documents/setup/wsl.md)
+- [MySQL のセットアップ](./documents/setup/mysql.md)
+
+### VSCode / Cursor 拡張機能
 
 - Formatter: josevseb.google-java-format-for-vs-code
 - Spring Boot Extension Pack
 - Extension Pack for Java
 
-## アプリケーションの実行
+## クイックスタート
 
-このプロジェクトでは Makefile を使用してアプリケーションを実行できます。
-
-### Makefile の使い方
-
-利用可能なコマンドを確認：
+### 1. データベースの起動
 
 ```bash
-make help
+docker compose up -d
 ```
 
-### 基本的なコマンド
+### 2. アプリケーションの起動
 
-- **アプリケーションのビルド**
+```bash
+make run-api
+```
 
-  ```bash
-  make build
-  ```
+### 3. 動作確認
 
-- **Spring Boot アプリケーションの起動**
+アプリケーション起動後、以下の URL にアクセスしてください：
 
-  ```bash
-  make run
-  ```
+- **Swagger UI**: http://localhost:8080/swagger-ui/index.html
 
-- **ビルド成果物のクリーンアップ**
+## ドキュメント
 
-  ```bash
-  make clean
-  ```
+### 初心者向け講座
 
-- **テストの実行**
-  ```bash
-  make test
-  ```
+- [ウェブアプリケーション入門](./documents/lecture/webapplication.md)
+- [Docker 入門](./documents/lecture/docker.md)
 
-### データベース関連のコマンド
+### セットアップガイド
 
-- **データベースの起動**
-
-  ```bash
-  make db-up
-  ```
-
-- **データベースの停止**
-
-  ```bash
-  make db-down
-  ```
-
-- **データベースのリセット**
-  ```bash
-  make db-reset
-  ```
-
-### 開発の流れ
-
-1. データベースを起動
-
-   ```bash
-   make db-up
-   ```
-
-2. アプリケーションを起動
-
-   ```bash
-   make run
-   ```
-
-3. ブラウザで Swagger UI を開く
-   - http://localhost:8080/swagger-ui/index.html
+- [make コマンド一覧](./documents/setup/make.md)
+- [WSL セットアップ](./documents/setup/wsl.md)
+- [MySQL セットアップ](./documents/setup/mysql.md)

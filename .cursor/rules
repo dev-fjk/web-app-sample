@@ -25,6 +25,8 @@
 - Model が持つデータの抽出処理などは Service に集約させずに、domain model method として提供すること
 - Request Class を Repositry Layer まで伝搬させないこと。また Entity Class を Controller Layer まで伝搬させないこと。
 - フラットパッケージで作成する
+- javadocは日本語で記載してください。
+- 極力変数は変更不要で定義し、finalを使用してください。
 
 ## Model変換について
 - シンプルな Model 変換は Model 内で static method で実装してください
