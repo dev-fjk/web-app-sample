@@ -32,6 +32,8 @@ dependencies {
   // DB
   implementation 'com.mysql:mysql-connector-j:9.4.0'
   implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+  // DB Server建てないので、Docker実行時はh2で代替
+  implementation 'com.h2database:h2'
 
   // libraries
   compileOnly 'org.projectlombok:lombok:1.18.42'
