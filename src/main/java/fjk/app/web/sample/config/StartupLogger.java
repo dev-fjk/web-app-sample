@@ -26,8 +26,9 @@ public class StartupLogger implements ApplicationListener<ApplicationReadyEvent>
     final String hostAddress = getHostAddress();
     final String swaggerPath = env.getProperty("springdoc.swagger-ui.path", "/swagger-ui.html");
     final String apiDocsPath = env.getProperty("springdoc.api-docs.path", "/v3/api-docs");
+    final String uiUrl = getUiUrl(env);
 
-    logStartupInfo(protocol, serverPort, contextPath, hostAddress, swaggerPath, apiDocsPath);
+    logStartupInfo(protocol, serverPort, contextPath, hostAddress, swaggerPath, apiDocsPath, uiUrl);
   }
 
   /**
@@ -56,6 +57,22 @@ public class StartupLogger implements ApplicationListener<ApplicationReadyEvent>
   }
 
   /**
+   * UI URLを取得
+   *
+   * @param env Environment
+   * @return UI URL（設定されていない場合はnull）
+   */
+  private String getUiUrl(final Environment env) {
+    // プロファイルがdockerの場合は http://localhost
+    final String[] activeProfiles = env.getActiveProfiles();
+    if (activeProfiles.length > 0 && "docker".equals(activeProfiles[0])) {
+      return "http://localhost";
+    }
+    // ローカル開発環境の場合は http://localhost:3000
+    return "http://localhost:3000";
+  }
+
+  /**
    * 起動情報をログ出力
    *
    * @param protocol プロトコル
@@ -64,6 +81,7 @@ public class StartupLogger implements ApplicationListener<ApplicationReadyEvent>
    * @param hostAddress ホストアドレス
    * @param swaggerPath Swaggerパス
    * @param apiDocsPath APIドキュメントパス
+   * @param uiUrl UI URL（オプショナル）
    */
   private void logStartupInfo(
       final String protocol,
@@ -71,7 +89,8 @@ public class StartupLogger implements ApplicationListener<ApplicationReadyEvent>
       final String contextPath,
       final String hostAddress,
       final String swaggerPath,
-      final String apiDocsPath) {
+      final String apiDocsPath,
+      final String uiUrl) {
 
     final String localUrl = String.format("%s://localhost:%s%s", protocol, port, contextPath);
     final String networkUrl =
@@ -88,6 +107,9 @@ public class StartupLogger implements ApplicationListener<ApplicationReadyEvent>
     message.append("╠").append(line).append("╣\n");
     message.append(String.format("║  ➜  Local:     %-60s ║\n", localUrl));
     message.append(String.format("║  ➜  Network:   %-60s ║\n", networkUrl));
+    if (uiUrl != null) {
+      message.append(String.format("║  🌐 UI URL:     %-60s ║\n", uiUrl));
+    }
     message.append("╠").append(line).append("╣\n");
     message.append(String.format("║  📚 Swagger UI:  %-58s ║\n", swaggerUrl));
     message.append(String.format("║  📖 API Docs:    %-58s ║\n", apiDocsUrl));

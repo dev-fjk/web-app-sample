@@ -2,6 +2,7 @@ package fjk.app.web.sample.config;
 
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,9 @@ public class OpenApiConfig {
 
   private final ObjectMapper objectMapper;
 
+  @Value("${springdoc.swagger-ui.server-url:}")
+  private String serverUrl;
+
   @Bean
   public OpenApiCustomizer registerSchemas() {
     return openApi -> {
@@ -31,9 +35,11 @@ public class OpenApiConfig {
       var schemas = ModelConverters.getInstance().read(ApiErrorResponse.class);
       schemas.forEach(components::addSchemas);
 
-      // servers設定を追加（/apiプレフィックス付き）
+      // servers設定を追加
+      // serverUrlが設定されている場合はそれを使用、そうでなければ/apiを使用
+      String url = serverUrl.isEmpty() ? "/api" : serverUrl;
       openApi.addServersItem(
-          new io.swagger.v3.oas.models.servers.Server().url("/api").description("API Server"));
+          new io.swagger.v3.oas.models.servers.Server().url(url).description("API Server"));
     };
   }
 
