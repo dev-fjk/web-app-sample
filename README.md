@@ -4,6 +4,8 @@
 
 ## 利用技術
 
+### バックエンド
+
 - Java: 21
 - Spring Boot
 - MyBatis
@@ -11,6 +13,14 @@
 - Docker Compose
 - OpenAPI / Swagger
 - Make
+
+### フロントエンド
+
+- React: 18.3.1
+- Vite: 7.3.1
+- React Router: 6.26.0
+- Tailwind CSS: 3.4.13
+- ESLint: 8.57.0
 
 ## 環境構築
 
@@ -28,6 +38,7 @@
 - [WSL のセットアップ](./documents/setup/wsl.md)
 - [MySQL のセットアップ](./documents/setup/mysql.md)
 - [Docker セットアップ](./documents/setup/docker.md)
+- [フロントエンドセットアップ](./documents/setup/frontend.md)
 
 ### VSCode / Cursor 拡張機能
 
@@ -45,15 +56,32 @@ docker compose up -d
 
 ### 2. アプリケーションの起動
 
+#### バックエンドとフロントエンドを同時に起動
+
+```bash
+make run
+```
+
+**注意**: フロントエンドを起動する前に、`frontend` ディレクトリで `npm install` を実行してください。
+
+#### バックエンドのみ起動
+
 ```bash
 make run-api
+```
+
+#### フロントエンドのみ起動
+
+```bash
+make run-fe
 ```
 
 ### 3. 動作確認
 
 アプリケーション起動後、以下の URL にアクセスしてください：
 
-- **Swagger UI**: http://localhost:8080/swagger-ui/index.html
+- **Frontend**: http://localhost:3000
+- **Swagger UI**: http://localhost:3000/swagger-ui.html（開発環境）または http://localhost/swagger-ui.html（Docker環境）
 
 ## ドキュメント
 
@@ -61,7 +89,16 @@ make run-api
 
 ソースコードの詳細は以下ディレクトリを参照してください。
 
-- [アーキテクチャドキュメント(Spring Boot)](./documents//architecture/springboot.md)
+- [Spring Boot アーキテクチャ](./documents/architecture/springboot.md)
+- [React フロントエンドアーキテクチャ](./documents/architecture/react.md)
+
+### セットアップガイド
+
+- [フロントエンドセットアップ](./documents/setup/frontend.md)
+- [make コマンド一覧](./documents/setup/make.md)
+- [WSL セットアップ](./documents/setup/wsl.md)
+- [MySQL セットアップ](./documents/setup/mysql.md)
+- [Docker セットアップ](./documents/setup/docker.md)
 
 ### 初心者向け講座
 
@@ -69,10 +106,3 @@ make run-api
 - [Docker 入門](./documents/lecture/docker.md)
 - [CI/CD 入門](./documents/lecture/cicd.md)
 - [ユニットテスト入門](./documents/lecture/unittest.md)
-
-### セットアップガイド
-
-- [make コマンド一覧](./documents/setup/make.md)
-- [WSL セットアップ](./documents/setup/wsl.md)
-- [MySQL セットアップ](./documents/setup/mysql.md)
-- [Docker セットアップ](./documents/setup/docker.md)

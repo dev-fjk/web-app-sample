@@ -1,0 +1,60 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+.vscode
+.cursor
+*.iml
+*.iws
+*.ipr
+
+# Build artifacts
+build/
+*.jar
+*.war
+*.class
+
+# Gradle
+.gradle
+!gradle/wrapper/gradle-wrapper.jar
+
+# Logs
+*.log
+logs/
+
+# Documentation
+README.md
+documents/
+LICENSE
+
+# Frontend node_modules (needed for build, but not the installed modules)
+frontend/node_modules
+frontend/dist
+frontend/.vite
+
+# Docker
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# Make
+Makefile
+
+# Config files not needed in container
+config/
+lombok.config
+
+# MySQL scripts (not needed in Docker, using H2)
+mysql/
+
+# Test files (skipped in build with -x test)
+src/test/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
