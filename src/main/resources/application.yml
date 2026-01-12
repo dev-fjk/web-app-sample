@@ -9,16 +9,24 @@ spring:
     time-zone: "Asia/Tokyo"
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3326/web_sample_db?useSSL=false&allowPublicKeyRetrieval=true
-    username: user
-    password: password
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
   devtools:
     restart:
-      enabled: true
+      enabled: false
+
+mybatis:
+  type-aliases-package: fjk.app.web.sample.models.infra.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
 
 logging:
   level:
     root: INFO
+    fjk.app.web.sample.repository: DEBUG
 
 springdoc:
   api-docs:

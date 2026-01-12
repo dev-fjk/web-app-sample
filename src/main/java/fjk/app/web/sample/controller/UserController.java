@@ -3,18 +3,41 @@ package fjk.app.web.sample.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import fjk.app.web.sample.models.presentation.query.UserListQuery;
+import fjk.app.web.sample.models.presentation.response.users.UserListResponse;
+import fjk.app.web.sample.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * ユーザーコントローラー
+ *
+ * <p>ユーザーに関するAPIエンドポイントを提供
+ */
+@Tag(name = "Users", description = "ユーザー管理API")
 @Validated
 @RestController
 @RequestMapping("v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
+  private final UserService userService;
+
+  /**
+   * ユーザー一覧検索
+   *
+   * @param query 検索条件
+   * @return ユーザーリスト
+   */
+  @Operation(summary = "ユーザー一覧検索", description = "条件に一致するユーザーを検索します")
   @GetMapping
-  public ResponseEntity<String> test() {
-    return ResponseEntity.ok("test");
+  public ResponseEntity<UserListResponse> search(@Valid @ModelAttribute final UserListQuery query) {
+    final UserListResponse response = userService.searchUsers(query);
+    return ResponseEntity.ok(response);
   }
 }
